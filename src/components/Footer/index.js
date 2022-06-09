@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
+import Chat from "../Chat";
 
 const Footer = () => {
-  return <Typography variant="h2" color="textPrimary">Footer</Typography>;
+  return <Chat />;
 };
 
 export default Footer;
