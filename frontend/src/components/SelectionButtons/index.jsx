@@ -20,7 +20,9 @@ const SelectionButtons = () => {
   const socket = io("/");
 
   useEffect(() => {
-    return () => socket.emit("single-battle", { playerChoice: choice, roomId: "free1" });
+    return () => socket.on("connect", () => {
+      socket.emit("single-battle", { playerChoices: choice, roomId: "free1" });
+    });
   }, [choice]);
 
   const iconEvent = (e) => {
@@ -31,7 +33,6 @@ const SelectionButtons = () => {
   return (
     <Grid
       container
-      xs={12}
       sx={{
         flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "center", height: "100%",
       }}
@@ -40,7 +41,15 @@ const SelectionButtons = () => {
 
       <IconGridWrap>
         {iconsInfo.map((item) => (
-          <IconButton id={item.id} variant="iconWrap" figure={item.id} onClick={iconEvent} gridArea={item.area} isShake>
+          <IconButton
+            key={item.id}
+            id={item.id}
+            variant="iconWrap"
+            figure={item.id}
+            onClick={iconEvent}
+            $gridArea={item.area}
+            $isShake
+          >
             {choiceIcons[item.id]}
           </IconButton>
         ))}

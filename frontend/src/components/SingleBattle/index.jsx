@@ -9,26 +9,30 @@ import GameItemContainer from "../GameItemContainer";
 import ResultMessage from "../ResultMessage";
 
 const SingleBattle = () => {
-  const { result, isBattle } = useContext(GameContext);
+  const { isBattle } = useContext(GameContext);
   const [counter, setCounter] = useState(3);
-
+  const [oponentChoise, setChoice] = useState();
+  const socket = io("/");
   useEffect(() => {
-    const socket = io("/");
-
-    socket.on("single-battle-result", (res) => console.log(res));
+    setCounter(0);
+    socket.on("connect", () => {
+      console.log(1);
+      socket.on("single-battle-result", (res) => setChoice(res));
+    });
   }, [isBattle]);
+  console.log(oponentChoise);
   // useEffect(() => {
   //   newComputerChoice();
   // }, []);
 
-  useEffect(() => {
-    const timer = counter > 0 ? setTimeout(() => {
-      setCounter(counter - 1);
-    }, 1000) : result();
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [counter, result]);
+  // useEffect(() => {
+  //   const timer = counter > 0 ? setTimeout(() => {
+  //     setCounter(counter - 1);
+  //   }, 1000) : result();
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [counter, result]);
 
   return (
     <Grid container xs={12} sx={{ margin: "auto", paddingTop: "7%", position: "relative" }}>
