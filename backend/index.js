@@ -34,9 +34,8 @@ const usersRouter = require('./routes/users');
 app.use('/users', usersRouter(app, express));
 
 const {
-  
   getWinPoints,
- 
+  mapGameElements
 } = require("./utils/battle");
 
 
@@ -46,7 +45,7 @@ io.on("connection", socket => {
     const keyRoom = io.sockets.adapter.rooms.keys()
     const roomsData = {};
     const { roomId } = socket.handshake.query
-    console.log(socket.handshake)
+    // console.log(socket.handshake)
 
     // TODO:
     // take keys room (roomName) for checking available room (no more than 2 people)
@@ -67,7 +66,6 @@ io.on("connection", socket => {
 
   // Hardcode rooms
   socket.join('free1');  
-  socket.join('free2');  
 
   // TODO:
   // make method for create room with unic name(id)
@@ -98,7 +96,17 @@ io.on("connection", socket => {
   // });
 
   //battle method
-  socket.on("battle", (playerChoices, roomId)=>{
+  socket.on("single-battle", ({playerChoice, roomId})=>{
+    const varibleToChoice = [mapGameElements.ROCK.title, mapGameElements.PAPER.title, mapGameElements.SCISSORS.title];
+    const computerChoice = varibleToChoice[Math.floor(Math.random() * varibleToChoice.length)];
+    const choices  = [computerChoice,playerChoice];
+    const result = getWinPoints(choices);
+    console.log(result)
+    socket.broadcast.to(roomId).emit("single-battle-result",result);    
+  })
+
+  //battle method
+  socket.on("battle", ({playerChoices, roomId})=>{
     const result = getWinPoints(playerChoices)
     socket.broadcast.to(roomId).emit("battle-result",result)   
   })

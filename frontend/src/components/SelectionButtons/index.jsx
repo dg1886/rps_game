@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 import { choiceIcons } from "../../constants/choiceIcons";
@@ -15,17 +15,18 @@ const iconsInfo = [
 ];
 
 const SelectionButtons = () => {
-  const { setMyChoice, toggleBattle, myChoice } = useContext(GameContext);
+  const [choice, setChoice] = useState(false);
+  const { toggleBattle } = useContext(GameContext);
+  const socket = io("/");
 
   useEffect(() => {
-    console.log(myChoice);
-    const socket = io("/");
-    socket.on("connect", () => {
-      socket.emit("battle", myChoice);
-    });
-  }, [myChoice]);
+    return () => socket.emit("single-battle", { playerChoice: choice, roomId: "free1" });
+  }, [choice]);
 
-  const iconEvent = (e) => { toggleBattle(true); setMyChoice(e.currentTarget.id); };
+  const iconEvent = (e) => {
+    setChoice(e.currentTarget.id);
+    toggleBattle(true);
+  };
 
   return (
     <Grid

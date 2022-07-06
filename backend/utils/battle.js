@@ -1,4 +1,4 @@
-const mapElements = {
+const mapGameElements = {
     ROCK: {
         value: 0,
         title: 'ROCK'
@@ -23,12 +23,12 @@ const winMatrix = [
 const drawValues = [1, 3];
 
 const matchWinner = (a, b) => {
-    const aValue = mapElements[a].value;
-    const bValue = mapElements[b].value;
+    const aValue = mapGameElements[a].value;
+    const bValue = mapGameElements[b].value;
     const result = winMatrix[aValue][bValue];
 
-    if (result === 1) return mapElements[a].title;
-    if (result === -1) return mapElements[b].title;
+    if (result === 1) return mapGameElements[a].title;
+    if (result === -1) return mapGameElements[b].title;
     return "DRAW";
 }
 
@@ -37,7 +37,7 @@ const getWinPoints = (playerChoices) => {
         return 'Incorrect choises or it`s not array';
     }
 
-    const uniqueChoises = playerChoices.filter((x, i, a) => a.indexOf(x) == i);
+    const uniqueChoises = playerChoices.filter((x, i, a) => a.indexOf(x) == i && x !== undefined && x !== '');
     if (drawValues.includes(uniqueChoises.length)) {
         return 'DRAW';
     }
@@ -46,5 +46,6 @@ const getWinPoints = (playerChoices) => {
 };
 
 module.exports = {
-   getWinPoints
+   getWinPoints,
+   mapGameElements
 };

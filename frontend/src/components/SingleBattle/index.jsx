@@ -1,5 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 import { GameResultGrid, StyledTypography } from "../../pages/single_player/Battle/styles";
 import { GameContext } from "../../services/gameContext";
@@ -8,18 +9,17 @@ import GameItemContainer from "../GameItemContainer";
 import ResultMessage from "../ResultMessage";
 
 const SingleBattle = () => {
-  const {
-    result, myChoice, computerChoice, newComputerChoice,
-  } = useContext(GameContext);
+  const { result, isBattle } = useContext(GameContext);
   const [counter, setCounter] = useState(3);
 
   useEffect(() => {
+    const socket = io("/");
 
-  });
-
-  useEffect(() => {
-    newComputerChoice();
-  }, []);
+    socket.on("single-battle-result", (res) => console.log(res));
+  }, [isBattle]);
+  // useEffect(() => {
+  //   newComputerChoice();
+  // }, []);
 
   useEffect(() => {
     const timer = counter > 0 ? setTimeout(() => {
@@ -38,7 +38,7 @@ const SingleBattle = () => {
         </Box>
 
         <Box sx={{ height: "fit-content", marginTop: "10px" }}>
-          <ChoiceButton choice={myChoice} isPlayer />
+          <ChoiceButton choice="ROCK" isPlayer />
         </Box>
 
       </Grid>
@@ -54,7 +54,7 @@ const SingleBattle = () => {
         <Box sx={{ height: "fit-content", marginTop: "10px" }}>
           {counter === 0 ? (
             <>
-              <ChoiceButton choice={computerChoice} timeout={counter} isPlayer={false} />
+              <ChoiceButton choice="ROCK" timeout={counter} isPlayer={false} />
             </>
           ) : <GameItemContainer timer={counter} />}
         </Box>
