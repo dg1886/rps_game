@@ -22,7 +22,7 @@ const Header = () => {
 
   const renderRooms = Object.keys(rooms).map((it) => {
     return (
-      <div>
+      <div key={Math.random()}>
         <p>Название комнаты {it}</p>
         <p>Количество людей {rooms[it]}</p>
       </div>

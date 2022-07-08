@@ -23,6 +23,7 @@ const winMatrix = [
 const drawValues = [1, 3];
 
 const matchWinner = (a, b) => {
+    console.log(a,b)
     const aValue = mapGameElements[a].value;
     const bValue = mapGameElements[b].value;
     const result = winMatrix[aValue][bValue];

@@ -96,19 +96,21 @@ io.on("connection", socket => {
   // });
 
   //battle method
-  socket.on("single-battle", ({playerChoice, roomId})=>{
+  socket.on("single-battle", ({playerChoices, roomId})=>{
+    console.log(playerChoices)
     const varibleToChoice = [mapGameElements.ROCK.title, mapGameElements.PAPER.title, mapGameElements.SCISSORS.title];
     const computerChoice = varibleToChoice[Math.floor(Math.random() * varibleToChoice.length)];
-    const choices  = [computerChoice,playerChoice];
+    const choices  = [computerChoice,playerChoices];
+    console.log(choices)
     const result = getWinPoints(choices);
     console.log(result)
     socket.broadcast.to(roomId).emit("single-battle-result",result);    
   })
 
   //battle method
-  socket.on("battle", ({playerChoices, roomId})=>{
+  socket.on("multi-battle", ({playerChoices, roomId})=>{
     const result = getWinPoints(playerChoices)
-    socket.broadcast.to(roomId).emit("battle-result",result)   
+    socket.broadcast.to(roomId).emit("multi-battle-result",result)   
   })
  
   //chat method
