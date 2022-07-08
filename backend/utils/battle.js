@@ -13,24 +13,20 @@ const mapGameElements = {
     },
 };
 
-
 const winMatrix = [
     [0, -1, 1],
     [1, 0, -1],
     [-1, 1, 0],
 ];
 
-const drawValues = [1, 3];
-
 const matchWinner = (a, b) => {
-    console.log(a,b)
     const aValue = mapGameElements[a].value;
     const bValue = mapGameElements[b].value;
     const result = winMatrix[aValue][bValue];
 
     if (result === 1) return mapGameElements[a].title;
     if (result === -1) return mapGameElements[b].title;
-    return "DRAW";
+    return null;
 }
 
 const getWinPoints = (playerChoices) => {
@@ -39,8 +35,8 @@ const getWinPoints = (playerChoices) => {
     }
 
     const uniqueChoises = playerChoices.filter((x, i, a) => a.indexOf(x) == i && x !== undefined && x !== '');
-    if (drawValues.includes(uniqueChoises.length)) {
-        return 'DRAW';
+    if (uniqueChoises.length!==2) {
+        return null;
     }
     
     return matchWinner(uniqueChoises[0],uniqueChoises[1]);

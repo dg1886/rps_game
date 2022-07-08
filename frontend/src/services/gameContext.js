@@ -1,11 +1,14 @@
 import {
   createContext, useCallback, useMemo, useState,
 } from "react";
+import { io } from "socket.io-client";
 
 import { getWinPoints } from "../common/utils/getWinPoints";
 import { GAME_ITEMS } from "../constants/names";
 
 export const GameContext = createContext(null);
+
+const socket = io("/");
 
 const GameContextProvider = ({ children }) => {
   const [myChoice, setMyChoice] = useState(null);
@@ -36,6 +39,7 @@ const GameContextProvider = ({ children }) => {
     clearChoice,
     isBattle,
     toggleBattle,
+    socket,
   }), [setMyChoice, myChoice, computerChoice, newComputerChoice, result, resultPoint, isBattle, toggleBattle]);
 
   return (

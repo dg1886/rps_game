@@ -42,6 +42,7 @@ const {
 
 io.on("connection", socket => {
   io.of("/").adapter.on("join-room", (room) => {
+  
     const keyRoom = io.sockets.adapter.rooms.keys()
     const roomsData = {};
     const { roomId } = socket.handshake.query
@@ -62,10 +63,11 @@ io.on("connection", socket => {
     })
     const rooms = Array.from(io.sockets.adapter.rooms.keys());
     io.emit("available-rooms", roomsData)
+    
   });
 
   // Hardcode rooms
-  socket.join('free1');  
+  socket.join('free1'); 
 
   // TODO:
   // make method for create room with unic name(id)
@@ -97,14 +99,16 @@ io.on("connection", socket => {
 
   //battle method
   socket.on("single-battle", ({playerChoices, roomId})=>{
-    console.log(playerChoices)
     const varibleToChoice = [mapGameElements.ROCK.title, mapGameElements.PAPER.title, mapGameElements.SCISSORS.title];
     const computerChoice = varibleToChoice[Math.floor(Math.random() * varibleToChoice.length)];
     const choices  = [computerChoice,playerChoices];
-    console.log(choices)
-    const result = getWinPoints(choices);
-    console.log(result)
-    socket.broadcast.to(roomId).emit("single-battle-result",result);    
+    const output = getWinPoints(choices);
+    const result = {
+      conclusion: output,
+      user: choices[1],
+      computer: choices[0]
+    }
+    io.to(roomId).emit("single-battle-result",result);    
   })
 
   //battle method

@@ -1,6 +1,7 @@
 import { Box, Grid } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import {
+  useContext, useEffect, useState,
+} from "react";
 
 import { GameResultGrid, StyledTypography } from "../../pages/single_player/Battle/styles";
 import { GameContext } from "../../services/gameContext";
@@ -9,18 +10,16 @@ import GameItemContainer from "../GameItemContainer";
 import ResultMessage from "../ResultMessage";
 
 const SingleBattle = () => {
-  const { isBattle } = useContext(GameContext);
+  const { socket } = useContext(GameContext);
   const [counter, setCounter] = useState(3);
-  const [oponentChoise, setChoice] = useState();
-  const socket = io("/");
+  // const [oponentChoise, setChoice] = useState();
+  // const newRef = useRef();
+
   useEffect(() => {
     setCounter(0);
-    socket.on("connect", () => {
-      console.log(1);
-      socket.on("single-battle-result", (res) => setChoice(res));
-    });
-  }, [isBattle]);
-  console.log(oponentChoise);
+    socket.on("single-battle-result", (res) => { console.log(res); });
+  }, [socket]);
+
   // useEffect(() => {
   //   newComputerChoice();
   // }, []);

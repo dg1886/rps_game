@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useContext, useEffect, useState } from "react";
 
 import ScoreHelper from "../../common/utils/scoreHelper";
+import { GameContext } from "../../services/gameContext";
 import {
   AvailableRooms,
   ScoreGridContainer, ScoreText, ScoreValue, StyledGrid, Text, TextGridContainer,
@@ -9,8 +9,8 @@ import {
 
 const Header = () => {
   const [rooms, setRooms] = useState([]);
+  const { socket } = useContext(GameContext);
   useEffect(() => {
-    const socket = io("/");
     socket.on("connect", () => {
       socket.on("available-rooms", (aRooms) => {
         // eslint-disable-next-line no-param-reassign
@@ -18,7 +18,7 @@ const Header = () => {
         setRooms(aRooms);
       });
     });
-  }, []);
+  }, [socket]);
 
   const renderRooms = Object.keys(rooms).map((it) => {
     return (
