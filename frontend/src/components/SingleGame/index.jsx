@@ -1,11 +1,9 @@
-import { useContext } from "react";
-
-import { GameContext } from "../../services/gameContext";
+import { useSingle } from "../../hooks/useSingleBattle";
 import SelectionButtons from "../SelectionButtons";
 import SingleBattle from "../SingleBattle";
 
 const SingleGame = () => {
-  const { isBattle } = useContext(GameContext);
+  const { isBattle } = useSingle();
   if (isBattle) {
     return <SingleBattle />;
   }

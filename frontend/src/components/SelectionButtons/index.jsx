@@ -1,9 +1,8 @@
 import { Grid } from "@mui/material";
-import { useContext } from "react";
 
 import { choiceIcons } from "../../constants/choiceIcons";
 import { GAME_ITEMS } from "../../constants/names";
-import { GameContext } from "../../services/gameContext";
+import { useSingle } from "../../hooks/useSingleBattle";
 import IconButton from "../Button";
 import { AnimatedTittle, IconGridWrap } from "./style";
 
@@ -14,13 +13,10 @@ const iconsInfo = [
 ];
 
 const SelectionButtons = () => {
-  const { toggleBattle, socket } = useContext(GameContext);
+  const { emitUserChoice } = useSingle();
 
   const iconEvent = (e) => {
-    if (socket) {
-      socket.emit("single-battle", { playerChoices: e.currentTarget.id, roomId: "free1" });
-      toggleBattle(true);
-    }
+    emitUserChoice({ playerChoice: e.currentTarget.id });
   };
 
   return (

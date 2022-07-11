@@ -1,37 +1,24 @@
 import { Box, Grid } from "@mui/material";
-import {
-  useContext, useEffect, useState,
-} from "react";
+import { useEffect, useState } from "react";
 
+import { useSingle } from "../../hooks/useSingleBattle";
 import { GameResultGrid, StyledTypography } from "../../pages/single_player/Battle/styles";
-import { GameContext } from "../../services/gameContext";
 import ChoiceButton from "../ChoiceButton";
 import GameItemContainer from "../GameItemContainer";
 import ResultMessage from "../ResultMessage";
 
 const SingleBattle = () => {
-  const { socket } = useContext(GameContext);
   const [counter, setCounter] = useState(3);
-  // const [oponentChoise, setChoice] = useState();
-  // const newRef = useRef();
+  const { result } = useSingle();
 
   useEffect(() => {
-    setCounter(0);
-    socket.on("single-battle-result", (res) => { console.log(res); });
-  }, [socket]);
-
-  // useEffect(() => {
-  //   newComputerChoice();
-  // }, []);
-
-  // useEffect(() => {
-  //   const timer = counter > 0 ? setTimeout(() => {
-  //     setCounter(counter - 1);
-  //   }, 1000) : result();
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, [counter, result]);
+    const timer = counter > 0 ? setTimeout(() => {
+      setCounter(counter - 1);
+    }, 1000) : 0;
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [counter]);
 
   return (
     <Grid container xs={12} sx={{ margin: "auto", paddingTop: "7%", position: "relative" }}>
@@ -41,13 +28,16 @@ const SingleBattle = () => {
         </Box>
 
         <Box sx={{ height: "fit-content", marginTop: "10px" }}>
-          <ChoiceButton choice="ROCK" isPlayer />
+          <ChoiceButton choice={result.user} isPlayer />
         </Box>
 
       </Grid>
 
       <GameResultGrid item xs={8} sm={3} md={2}>
+        {counter === 0
+      && (
         <ResultMessage />
+      )}
       </GameResultGrid>
 
       <Grid item xs={4} sx={{ margin: "auto", flexDirection: "column" }}>
@@ -55,11 +45,9 @@ const SingleBattle = () => {
           <StyledTypography variant="h2" color="textPrimary" sx={{ textTransform: "uppercase" }}>The House Picked</StyledTypography>
         </Box>
         <Box sx={{ height: "fit-content", marginTop: "10px" }}>
-          {counter === 0 ? (
-            <>
-              <ChoiceButton choice="ROCK" timeout={counter} isPlayer={false} />
-            </>
-          ) : <GameItemContainer timer={counter} />}
+          {counter === 0
+            ? <ChoiceButton choice={result.computer} timeout={counter} isPlayer={false} />
+            : <GameItemContainer timer={counter} />}
         </Box>
       </Grid>
     </Grid>

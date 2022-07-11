@@ -1,46 +1,20 @@
 import {
-  createContext, useCallback, useMemo, useState,
+  createContext, useMemo, useState,
 } from "react";
 import { io } from "socket.io-client";
-
-import { getWinPoints } from "../common/utils/getWinPoints";
-import { GAME_ITEMS } from "../constants/names";
 
 export const GameContext = createContext(null);
 
 const socket = io("/");
 
 const GameContextProvider = ({ children }) => {
-  const [myChoice, setMyChoice] = useState(null);
-  const [computerChoice, setComputerChoice] = useState(null);
-  const [resultPoint, setResultPoint] = useState(null);
   const [isBattle, toggleBattle] = useState(false);
 
-  const newComputerChoice = useCallback(() => {
-    const randomChoice = Math.floor(Math.random() * Object.keys(GAME_ITEMS).length);
-    setComputerChoice(Object.values(GAME_ITEMS)[randomChoice]);
-  }, []);
-
-  const result = useCallback(() => {
-    setResultPoint(getWinPoints(myChoice, computerChoice));
-  }, [computerChoice, myChoice]);
-
-  const clearChoice = () => {
-    setResultPoint(null);
-  };
-
   const contextValue = useMemo(() => ({
-    setMyChoice,
-    myChoice,
-    computerChoice,
-    newComputerChoice,
-    result,
-    resultPoint,
-    clearChoice,
     isBattle,
     toggleBattle,
     socket,
-  }), [setMyChoice, myChoice, computerChoice, newComputerChoice, result, resultPoint, isBattle, toggleBattle]);
+  }), [isBattle, toggleBattle]);
 
   return (
     <GameContext.Provider value={contextValue}>

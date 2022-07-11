@@ -1,24 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-
-import ScoreHelper from "../../common/utils/scoreHelper";
-import { GameContext } from "../../services/gameContext";
+import { useSingle } from "../../hooks/useSingleBattle";
 import {
   AvailableRooms,
   ScoreGridContainer, ScoreText, ScoreValue, StyledGrid, Text, TextGridContainer,
 } from "./styles";
 
 const Header = () => {
-  const [rooms, setRooms] = useState([]);
-  const { socket } = useContext(GameContext);
-  useEffect(() => {
-    socket.on("connect", () => {
-      socket.on("available-rooms", (aRooms) => {
-        // eslint-disable-next-line no-param-reassign
-        delete aRooms[socket.id];
-        setRooms(aRooms);
-      });
-    });
-  }, [socket]);
+  const { rooms, score } = useSingle();
 
   const renderRooms = Object.keys(rooms).map((it) => {
     return (
@@ -41,7 +28,7 @@ const Header = () => {
       <ScoreGridContainer item component="div" xs={3} md={2} lg={2}>
         <ScoreText variant="body2" color="textPrimaryScore">SCORE</ScoreText>
         <ScoreValue variant="caption" color="textSecondary">
-          <ScoreHelper />
+          {score}
         </ScoreValue>
       </ScoreGridContainer>
     </StyledGrid>
