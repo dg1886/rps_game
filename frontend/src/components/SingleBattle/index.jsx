@@ -1,15 +1,15 @@
 import { Box, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { useSingle } from "../../hooks/useSingleBattle";
 import { GameResultGrid, StyledTypography } from "../../pages/single_player/Battle/styles";
+import { GameContext } from "../../services/gameContext";
 import ChoiceButton from "../ChoiceButton";
 import GameItemContainer from "../GameItemContainer";
 import ResultMessage from "../ResultMessage";
 
 const SingleBattle = () => {
   const [counter, setCounter] = useState(3);
-  const { result } = useSingle();
+  const { result } = useContext(GameContext);
 
   useEffect(() => {
     const timer = counter > 0 ? setTimeout(() => {
@@ -21,7 +21,7 @@ const SingleBattle = () => {
   }, [counter]);
 
   return (
-    <Grid container xs={12} sx={{ margin: "auto", paddingTop: "7%", position: "relative" }}>
+    <Grid container sx={{ margin: "auto", paddingTop: "7%", position: "relative" }}>
       <Grid item xs={4} sx={{ margin: "auto", flexDirection: "column" }}>
         <Box sx={{ height: "105px" }}>
           <StyledTypography variant="h2" color="textPrimary" sx={{ textTransform: "uppercase" }}>You Picked</StyledTypography>

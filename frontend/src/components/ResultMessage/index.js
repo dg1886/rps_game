@@ -1,11 +1,12 @@
 import {
   Box, Button, Grow, Typography,
 } from "@mui/material";
+import { useContext } from "react";
 
-import { useSingle } from "../../hooks/useSingleBattle";
+import { GameContext } from "../../services/gameContext";
 
 const ResultMessage = () => {
-  const { toggleBattle, messageOptions } = useSingle();
+  const { toggleBattle, messageOptions } = useContext(GameContext);
 
   const [firstValue, secondValue] = messageOptions;
 

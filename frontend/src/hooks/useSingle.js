@@ -15,34 +15,22 @@ export const useSingle = () => {
 
   const [score, setScore] = useState(0);
 
-  const [rooms, setRooms] = useState([]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      socket.on("available-rooms", (aRooms) => {
-        // eslint-disable-next-line no-param-reassign
-        delete aRooms[socket.id];
-        setRooms(aRooms);
-      });
-    });
-  }, [socket]);
-
   // TODO: fix that, return only you lose
   useEffect(() => {
-    if (result.conclusion === result.user) {
+    console.log(messageOptions);
+    console.log(result);
+    if (result.conclusion && result.conclusion === result.user) {
       setMessageOptions(["You", "Win"]);
+      setScore((s) => s + 1);
     }
-    if (result.conclusion === result.computer) {
+    if (result.conclusion && result.conclusion === result.computer) {
       setMessageOptions(["You", "Lose"]);
+      setScore((s) => s - 1);
     }
-    if (result.conclusion === null) {
+    if (result.conclusion && result.conclusion === null) {
       setMessageOptions(["Draw", ""]);
+      setScore((s) => s + 0);
     }
-  }, [result]);
-
-  // TODO: fix score on header
-  useEffect(() => {
-    setScore(score + 0);
   }, [result]);
 
   const emitUserChoice = ({ playerChoice }) => {
@@ -50,15 +38,19 @@ export const useSingle = () => {
     toggleBattle(true);
   };
 
-  socket.on("single-battle-result", (res) => {
-    setResultBattle({
-      conclusion: res.conclusion,
-      computer: res.computer,
-      user: res.user,
+  useEffect(() => {
+    console.log("useef");
+    socket.on("single-battle-result", (res) => {
+      setResultBattle({
+        conclusion: res.conclusion,
+        computer: res.computer,
+        user: res.user,
+      });
     });
-  });
+    return () => socket.off("single-battle-result");
+  }, []);
 
   return {
-    isBattle, toggleBattle, emitUserChoice, result, messageOptions, score, rooms,
+    isBattle, toggleBattle, emitUserChoice, result, messageOptions, score,
   };
 };

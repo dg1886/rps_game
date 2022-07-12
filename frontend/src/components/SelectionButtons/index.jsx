@@ -1,8 +1,9 @@
 import { Grid } from "@mui/material";
+import { useContext } from "react";
 
 import { choiceIcons } from "../../constants/choiceIcons";
 import { GAME_ITEMS } from "../../constants/names";
-import { useSingle } from "../../hooks/useSingleBattle";
+import { GameContext } from "../../services/gameContext";
 import IconButton from "../Button";
 import { AnimatedTittle, IconGridWrap } from "./style";
 
@@ -13,7 +14,7 @@ const iconsInfo = [
 ];
 
 const SelectionButtons = () => {
-  const { emitUserChoice } = useSingle();
+  const { emitUserChoice } = useContext(GameContext);
 
   const iconEvent = (e) => {
     emitUserChoice({ playerChoice: e.currentTarget.id });

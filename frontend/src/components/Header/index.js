@@ -1,11 +1,14 @@
-import { useSingle } from "../../hooks/useSingleBattle";
+import { useContext } from "react";
+
+import { useMulti } from "../../hooks/useMulti";
+import { GameContext } from "../../services/gameContext";
 import {
-  AvailableRooms,
-  ScoreGridContainer, ScoreText, ScoreValue, StyledGrid, Text, TextGridContainer,
+  AvailableRooms, ScoreGridContainer, ScoreText, ScoreValue, StyledGrid, Text, TextGridContainer,
 } from "./styles";
 
 const Header = () => {
-  const { rooms, score } = useSingle();
+  const { rooms } = useMulti();
+  const { score } = useContext(GameContext);
 
   const renderRooms = Object.keys(rooms).map((it) => {
     return (
@@ -16,7 +19,7 @@ const Header = () => {
     );
   });
   return (
-    <StyledGrid container xs={11} lg={8}>
+    <StyledGrid container item xs={11} lg={8}>
       <TextGridContainer item component="div">
         <Text variant="h1" color="textPrimary">rock</Text>
         <Text variant="h1" color="textPrimary">paper</Text>

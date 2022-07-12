@@ -108,7 +108,7 @@ io.on("connection", socket => {
       user: choices[1],
       computer: choices[0]
     }
-    io.to(roomId).emit("single-battle-result",result);    
+    io.to(roomId).emit("single-battle-result",result)
   })
 
   //battle method
