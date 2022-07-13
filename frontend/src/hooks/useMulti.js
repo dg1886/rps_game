@@ -10,9 +10,9 @@ export const useMulti = () => {
   useEffect(() => {
     socket.on("connect", () => {
       socket.on("available-rooms", (aRooms) => {
-        // eslint-disable-next-line no-param-reassign
-        delete aRooms[socket.id];
-        setRooms(aRooms);
+        const arrayAvailableRooms = Object.entries(aRooms);
+        const availableRooms = arrayAvailableRooms.filter((elem) => elem[0] !== socket.id);
+        setRooms(availableRooms);
       });
     });
   }, [socket]);

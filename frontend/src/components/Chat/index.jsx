@@ -39,7 +39,6 @@ const Chat = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (socket) {
       socket.on("message", ({ name, message }) => {
-        console.log(1);
         setChat([...chat, { name, message }]);
       });
     }
@@ -51,7 +50,6 @@ const Chat = ({ isOpen, onClose }) => {
 
   const onMessageSubmit = (e) => {
     const { message } = messages;
-    console.log(socket);
     socket.emit("message", { nickName, message });
     e.preventDefault();
     setMessages({ message: "", nickName });

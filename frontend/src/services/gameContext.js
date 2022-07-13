@@ -20,20 +20,35 @@ const GameContextProvider = ({ children }) => {
 
   const [score, setScore] = useState(0);
 
+  const [counter, setCounter] = useState(3);
+
   useEffect(() => {
-    if (result.conclusion === result.user) {
+    if (result.conclusion === result.user && !counter) {
       setMessageOptions(["You", "Win"]);
       setScore((s) => s + 1);
     }
-    if (result.conclusion === result.computer) {
+    if (result.conclusion === result.computer && !counter) {
       setMessageOptions(["You", "Lose"]);
       setScore((s) => s - 1);
     }
-    if (result.conclusion === null) {
+    if (result.conclusion === null && !counter) {
       setMessageOptions(["Draw", ""]);
       setScore((s) => s + 0);
     }
-  }, [result]);
+  }, [result, counter]);
+
+  useEffect(() => {
+    let timer = 0;
+    if (isBattle) {
+      timer = counter > 0 ? setTimeout(() => {
+        setCounter(counter - 1);
+      }, 1000) : 0;
+    }
+    if (!isBattle) {
+      setCounter(3);
+      clearTimeout(timer);
+    }
+  }, [isBattle, counter]);
 
   const emitUserChoice = ({ playerChoice }) => {
     socket.emit("single-battle", { playerChoices: playerChoice, roomId: "free1" });
@@ -59,7 +74,8 @@ const GameContextProvider = ({ children }) => {
     result,
     messageOptions,
     score,
-  }), [isBattle, toggleBattle, result, messageOptions, score]);
+    counter,
+  }), [isBattle, toggleBattle, result, messageOptions, score, counter]);
 
   return (
     <GameContext.Provider value={contextValue}>

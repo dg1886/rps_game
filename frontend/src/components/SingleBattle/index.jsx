@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import { GameResultGrid, StyledTypography } from "../../pages/single_player/Battle/styles";
 import { GameContext } from "../../services/gameContext";
@@ -8,17 +8,7 @@ import GameItemContainer from "../GameItemContainer";
 import ResultMessage from "../ResultMessage";
 
 const SingleBattle = () => {
-  const [counter, setCounter] = useState(3);
-  const { result } = useContext(GameContext);
-
-  useEffect(() => {
-    const timer = counter > 0 ? setTimeout(() => {
-      setCounter(counter - 1);
-    }, 1000) : 0;
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [counter]);
+  const { result, counter } = useContext(GameContext);
 
   return (
     <Grid container sx={{ margin: "auto", paddingTop: "7%", position: "relative" }}>

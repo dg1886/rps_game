@@ -14,7 +14,6 @@ function App() {
         </BrowserRouter>
       </GameContextProvider>
     </ThemeProvider>
-
   );
 }
 

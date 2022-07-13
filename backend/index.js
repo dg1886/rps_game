@@ -46,8 +46,7 @@ io.on("connection", socket => {
     const keyRoom = io.sockets.adapter.rooms.keys()
     const roomsData = {};
     const { roomId } = socket.handshake.query
-    // console.log(socket.handshake)
-
+   
     // TODO:
     // take keys room (roomName) for checking available room (no more than 2 people)
 

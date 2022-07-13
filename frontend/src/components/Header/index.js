@@ -10,11 +10,11 @@ const Header = () => {
   const { rooms } = useMulti();
   const { score } = useContext(GameContext);
 
-  const renderRooms = Object.keys(rooms).map((it) => {
+  const renderRooms = rooms.map((elem) => {
     return (
       <div key={Math.random()}>
-        <p>Название комнаты {it}</p>
-        <p>Количество людей {rooms[it]}</p>
+        <p>Название комнаты {elem[0]}</p>
+        <p>Количество людей {elem[1]}</p>
       </div>
     );
   });

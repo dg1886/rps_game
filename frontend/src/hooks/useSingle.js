@@ -17,8 +17,6 @@ export const useSingle = () => {
 
   // TODO: fix that, return only you lose
   useEffect(() => {
-    console.log(messageOptions);
-    console.log(result);
     if (result.conclusion && result.conclusion === result.user) {
       setMessageOptions(["You", "Win"]);
       setScore((s) => s + 1);
@@ -39,7 +37,6 @@ export const useSingle = () => {
   };
 
   useEffect(() => {
-    console.log("useef");
     socket.on("single-battle-result", (res) => {
       setResultBattle({
         conclusion: res.conclusion,
