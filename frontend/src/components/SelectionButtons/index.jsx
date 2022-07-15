@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
-import { useContext, useEffect } from "react";
-import { io } from "socket.io-client";
+import { useContext } from "react";
 
 import { choiceIcons } from "../../constants/choiceIcons";
 import { GAME_ITEMS } from "../../constants/names";
@@ -15,22 +14,15 @@ const iconsInfo = [
 ];
 
 const SelectionButtons = () => {
-  const { setMyChoice, toggleBattle, myChoice } = useContext(GameContext);
+  const { emitUserChoice } = useContext(GameContext);
 
-  useEffect(() => {
-    console.log(myChoice);
-    const socket = io("/");
-    socket.on("connect", () => {
-      socket.emit("battle", myChoice);
-    });
-  }, [myChoice]);
-
-  const iconEvent = (e) => { toggleBattle(true); setMyChoice(e.currentTarget.id); };
+  const iconEvent = (e) => {
+    emitUserChoice({ playerChoice: e.currentTarget.id });
+  };
 
   return (
     <Grid
       container
-      xs={12}
       sx={{
         flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "center", height: "100%",
       }}
@@ -39,7 +31,15 @@ const SelectionButtons = () => {
 
       <IconGridWrap>
         {iconsInfo.map((item) => (
-          <IconButton id={item.id} variant="iconWrap" figure={item.id} onClick={iconEvent} gridArea={item.area} isShake>
+          <IconButton
+            key={item.id}
+            id={item.id}
+            variant="iconWrap"
+            figure={item.id}
+            onClick={iconEvent}
+            $gridArea={item.area}
+            $isShake
+          >
             {choiceIcons[item.id]}
           </IconButton>
         ))}

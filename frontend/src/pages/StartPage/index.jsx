@@ -29,8 +29,8 @@ const StartPage = () => {
   const id = isOpen ? "simple-popover" : undefined;
 
   return (
-    <StyledGrid container xs={10}>
-      <Grid container xs="auto" spacing={2} sx={{ flexDirection: "column" }}>
+    <StyledGrid container item xs={10}>
+      <Grid container spacing={2} sx={{ flexDirection: "column" }}>
         <Grid item>
           <StyledTitle variant="caption">Rock Paper Scissors</StyledTitle>
         </Grid>
